@@ -20,9 +20,14 @@ class ClientService
         }
         return $response;
     }
+    public function removeClient($id){
+        $stmt = $this->pdo->prepare("DELETE from clients WHERE id = ?");
+        $stmt->execute([$id]);
+    }
     public function getClients(){
         $stmt = $this->pdo->prepare("SELECT * FROM clients ORDER BY date ASC LIMIT 5");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 }

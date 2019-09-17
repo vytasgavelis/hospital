@@ -1,14 +1,15 @@
 <?php
-include("../resources/dbconnection.php");
 
 session_start();
+
+include("../resources/dbconnection.php");
 
 ?>
 <html>
 <head>
 </head>
 <body>
-  <form method="POST" action="register.php"> 
+  <form method="GET" action="register.php"> 
     <label for="name">Your name</label>
     <input type="text" name="name">
     <button type="submit">Register</button>  

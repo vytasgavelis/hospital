@@ -12,11 +12,11 @@ $dsn = 'mysql:host=' . $server . ';dbname=' . $dbname;
 
 $pdo = new PDO($dsn, $username, $password);
 
-$sql = "CREATE TABLE IF NOT EXISTS clients(
+$tableQuery = "CREATE TABLE IF NOT EXISTS clients(
     id            INT AUTO_INCREMENT PRIMARY KEY,
     client_name   VARCHAR (255)         NOT NULL,
     date          DATETIME              NOT NULL
   )";
-$stmt = $pdo->prepare($sql);
+$stmt = $pdo->prepare($tableQuery);
 $stmt->execute();
 ?>

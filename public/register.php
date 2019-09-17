@@ -7,10 +7,10 @@ include_once('../resources/dbconnection.php');
 session_start();
 
 $clientService = new ClientService($pdo);
-if(isset($_POST['name'])){
-    $_SESSION['response'] = $clientService->addClient($_POST['name']);
+if(isset($_GET['name'])){
+    $_SESSION['response'] = $clientService->addClient($_GET['name']);
 }else{
     $_SESSION['response'] = "Įvyko klaida, kreipkitės telefonu.";
 }
 
-header('location:' . $_SERVER['DOCUMENT_ROOT']);
+header('Location:' . $_SERVER['DOCUMENT_ROOT']);
