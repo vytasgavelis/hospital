@@ -1,8 +1,10 @@
 <?php
 
 session_start();
+clearstatcache();
 
 include("../resources/dbconnection.php");
+
 
 ?>
 <html>
