@@ -1,4 +1,6 @@
 <?php
+include('Client.php');
+
 class ClientService
 {
     protected $pdo;
@@ -8,10 +10,11 @@ class ClientService
     }
 
     public function addClient($name){
-        $stmt = $this->pdo->prepare("INSERT INTO clients (client_name, date) VALUES(:name, :date)");
+        $stmt = $this->pdo->prepare("INSERT INTO clients (client_name, date, specialist) VALUES(:name, :date, :specialist)");
         $stmt->execute(array(
-            ':name' => $name,
-            ':date'         => date('Y/m/d H:i:s')
+            ':name'         => $name,
+            ':date'         => date('Y/m/d H:i:s'),
+            ':specialist'   => 'Dr. Bičiulis'
         ));
         if($stmt){
             $response = "Užregistruota sėkmingai.";
@@ -24,10 +27,20 @@ class ClientService
         $stmt = $this->pdo->prepare("DELETE from clients WHERE id = ?");
         $stmt->execute([$id]);
     }
+    public function serviceClient($id){
+        $stmt = $this->pdo->prepare("UPDATE clients SET serviced = 1 WHERE id = ?");
+        $stmt->execute([$id]);
+    }
     public function getClients(){
         $stmt = $this->pdo->prepare("SELECT * FROM clients ORDER BY date ASC LIMIT 5");
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $clientsObjs = array();
+        foreach($clients as $client){
+            array_push($clientsObjs, new Client($this->pdo, $client));
+        }
+        return $clientsObjs;
     }
 
 }

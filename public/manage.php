@@ -11,12 +11,21 @@
 
     $token = Token::generate();
     foreach($clients as $client){
-        echo $client['date'];
-        echo "<form method='POST' action='remove.php'>";
-        echo "<input type='hidden' name='token' value='" . $token . "'></input>";
-        echo "<input type='hidden' name='id' value='" . $client['id'] . "'></input>";
-        echo "<button type='submit'>Remove</button>";
-        echo "</form>";
-        echo "<br>";
+        if(!$client->isServiced()){
+            echo $client->getDate();
+            echo "<form method='POST' action='remove.php'>";
+            echo "<input type='hidden' name='token' value='" . $token . "'></input>";
+            echo "<input type='hidden' name='id' value='" . $client->getId() . "'></input>";
+            echo "<button type='submit'>Remove</button>";
+            echo "</form>";
+
+            echo "<form method='POST' action='service.php'>";
+            echo "<input type='hidden' name='token' value='" . $token . "'></input>";
+            echo "<input type='hidden' name='id' value='" . $client->getId() . "'></input>";
+            echo "<button type='submit'>Service</button>";
+            echo "</form>";
+
+            echo "<br>";
+        }
     }
 ?>
