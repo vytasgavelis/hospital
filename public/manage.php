@@ -11,7 +11,7 @@
 
     $token = Token::generate();
     foreach($clients as $client){
-        if(!$client->isServiced()){
+        //if(!$client->isServiced()){
 
             echo $client->getId() . "<br>" . $client->getDate() . "<br>" . $client->getSpecialistId();
             
@@ -30,6 +30,6 @@
             echo "</form>";
 
             echo "<br>";
-        }
+        //}
     }
 ?>

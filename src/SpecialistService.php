@@ -26,4 +26,11 @@ class SpecialistService
             ':id' => $id
         ));
     }
+    public function updateAverageTime($id, $avg){
+        $stmt = $this->pdo->prepare("UPDATE specialists SET avg_time = :avg_time WHERE id = :id");
+        $stmt->execute(array(
+            ':avg_time' => $avg,
+            ':id' => $id
+        ));
+    }
 }
