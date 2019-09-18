@@ -28,10 +28,21 @@ $clientsTblQuery = "CREATE TABLE IF NOT EXISTS clients(
     date                DATETIME              NOT NULL
     )";
 
+$timesTblQuery = "CREATE TABLE IF NOT EXISTS times(
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    specialists_id 		INT,
+    FOREIGN KEY (specialists_id)  REFERENCES specialists(id),
+    time                TIME              NOT NULL
+    )";
+
 
 $stmt = $pdo->prepare($specialistsTblQuery);
 $stmt->execute();
 
 $stmt = $pdo->prepare($clientsTblQuery);
 $stmt->execute();
+
+$stmt = $pdo->prepare($timesTblQuery);
+$stmt->execute();
+
 ?>

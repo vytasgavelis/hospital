@@ -13,7 +13,8 @@
     foreach($clients as $client){
         if(!$client->isServiced()){
 
-            echo $client->getDate();
+            echo $client->getId() . "<br>" . $client->getDate() . "<br>" . $client->getSpecialistId();
+            
             echo "<form method='POST' action='remove.php'>";
             echo "<input type='hidden' name='token' value='" . $token . "'></input>";
             echo "<input type='hidden' name='id' value='" . $client->getId() . "'></input>";
@@ -22,6 +23,8 @@
 
             echo "<form method='POST' action='service.php'>";
             echo "<input type='hidden' name='token' value='" . $token . "'></input>";
+            echo "<input type='hidden' name='date' value='" . $client->getDate() . "'></input>";
+            echo "<input type='hidden' name='specialist_id' value='" . $client->getSpecialistId() . "'></input>";
             echo "<input type='hidden' name='id' value='" . $client->getId() . "'></input>";
             echo "<button type='submit'>Service</button>";
             echo "</form>";

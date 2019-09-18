@@ -4,15 +4,15 @@ class Client{
 
     protected $id;
     protected $name;
-    protected $specialist;
+    protected $specialistId;
     protected $serviced = 0;
     protected $date;
 
     function __construct($pdo, $data){
         $this->pdo = $pdo;
         $this->id = $data['id'];
-        $this->name = $data['client_name'];
-        $this->specialist = $data['specialist'];
+        $this->name = $data['clients_name'];
+        $this->specialistId = $data['specialists_id'];
         $this->serviced = $data['serviced'];
         $this->date = $data['date'];      
     }
@@ -25,8 +25,8 @@ class Client{
     public function getName(){
         return $this->name;
     }
-    public function getSpecialist(){
-        return $this->specialist;
+    public function getSpecialistId(){
+        return $this->specialistId;
     }
     public function getDate(){
         return $this->date;

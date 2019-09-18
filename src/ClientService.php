@@ -32,7 +32,7 @@ class ClientService
         $stmt->execute([$id]);
     }
     public function getClients(){
-        $stmt = $this->pdo->prepare("SELECT * FROM clients ORDER BY date ASC LIMIT 5");
+        $stmt = $this->pdo->prepare("SELECT * FROM clients ORDER BY date ASC LIMIT 10");
         $stmt->execute();
         $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
         

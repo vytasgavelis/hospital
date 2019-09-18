@@ -19,4 +19,11 @@ class SpecialistService
         }
         return $specialistsObjs;
     }
+    public function updateLastTime($id, $lastTime){
+        $stmt = $this->pdo->prepare("UPDATE specialists SET last_time = :last_time WHERE id = :id");
+        $stmt->execute(array(
+            ':last_time' => $lastTime,
+            ':id' => $id
+        ));
+    }
 }
