@@ -12,13 +12,26 @@ $dsn = 'mysql:host=' . $server . ';dbname=' . $dbname;
 
 $pdo = new PDO($dsn, $username, $password);
 
-$tableQuery = "CREATE TABLE IF NOT EXISTS clients(
-    id            INT AUTO_INCREMENT PRIMARY KEY,
-    client_name   VARCHAR (255)         NOT NULL,
-    specialist    VARCHAR (255)         NOT NULL,
-    serviced      BOOLEAN               NOT NULL DEFAULT 0,
-    date          DATETIME              NOT NULL
+$specialistsTblQuery = "CREATE TABLE IF NOT EXISTS specialists(
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    name                VARCHAR (255)           NOT NULL,
+    avg_time            TIME                NOT NULL,
+    last_time           TIME                NOT NULL
   )";
-$stmt = $pdo->prepare($tableQuery);
+
+$clientsTblQuery = "CREATE TABLE IF NOT EXISTS clients(
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    client_name         VARCHAR (255)         NOT NULL,
+    specialists_id 		INT,
+    FOREIGN KEY (specialists_id)  REFERENCES specialists(id),
+    serviced            BOOLEAN               NOT NULL DEFAULT 0,
+    date                DATETIME              NOT NULL
+    )";
+
+
+$stmt = $pdo->prepare($specialistsTblQuery);
+$stmt->execute();
+
+$stmt = $pdo->prepare($clientsTblQuery);
 $stmt->execute();
 ?>

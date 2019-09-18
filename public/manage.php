@@ -12,6 +12,7 @@
     $token = Token::generate();
     foreach($clients as $client){
         if(!$client->isServiced()){
+
             echo $client->getDate();
             echo "<form method='POST' action='remove.php'>";
             echo "<input type='hidden' name='token' value='" . $token . "'></input>";
