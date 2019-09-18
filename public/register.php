@@ -5,10 +5,9 @@ include_once('../resources/config.php');
 include_once('../resources/dbconnection.php');
 
 session_start();
-
 $clientService = new ClientService($pdo);
-if(isset($_GET['name']) && $_GET['name'] != ""){
-    $_SESSION['response'] = $clientService->addClient($_GET['name']);
+if(isset($_GET['name'], $_GET['specialist_id']) && $_GET['name'] != ""){
+    $_SESSION['response'] = $clientService->addClient($_REQUEST);
 }else if(isset($_GET['name']) && $_GET['name'] == ""){
     $_SESSION['response'] = "Prašome užpildyti vardo laukelį";
 }else{

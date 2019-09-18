@@ -9,12 +9,12 @@ class ClientService
         $this->pdo = $pdo;
     }
 
-    public function addClient($name){
-        $stmt = $this->pdo->prepare("INSERT INTO clients (client_name, date, specialist) VALUES(:name, :date, :specialist)");
+    public function addClient($request){
+        $stmt = $this->pdo->prepare("INSERT INTO clients (clients_name, date, specialists_id) VALUES(:name, :date, :specialist_id)");
         $stmt->execute(array(
-            ':name'         => $name,
+            ':name'         => $request['name'],
             ':date'         => date('Y/m/d H:i:s'),
-            ':specialist'   => 'Dr. Bičiulis'
+            ':specialist_id'   => $request['specialist_id']
         ));
         if($stmt){
             $response = "Užregistruota sėkmingai.";

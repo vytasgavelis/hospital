@@ -15,13 +15,13 @@ $pdo = new PDO($dsn, $username, $password);
 $specialistsTblQuery = "CREATE TABLE IF NOT EXISTS specialists(
     id                  INT AUTO_INCREMENT PRIMARY KEY,
     name                VARCHAR (255)           NOT NULL,
-    avg_time            TIME                NOT NULL,
-    last_time           TIME                NOT NULL
+    avg_time            TIME                    NOT NULL,
+    last_time           DATETIME                NOT NULL
   )";
 
 $clientsTblQuery = "CREATE TABLE IF NOT EXISTS clients(
     id                  INT AUTO_INCREMENT PRIMARY KEY,
-    client_name         VARCHAR (255)         NOT NULL,
+    clients_name         VARCHAR (255)         NOT NULL,
     specialists_id 		INT,
     FOREIGN KEY (specialists_id)  REFERENCES specialists(id),
     serviced            BOOLEAN               NOT NULL DEFAULT 0,
