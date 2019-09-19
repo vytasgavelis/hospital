@@ -1,5 +1,6 @@
 <?php
 include('Client.php');
+include('TimeService.php');
 
 class ClientService
 {
@@ -32,7 +33,8 @@ class ClientService
         $stmt->execute([$id]);
     }
     public function getClients(){
-        $stmt = $this->pdo->prepare("SELECT * FROM clients ORDER BY date ASC LIMIT 10");
+        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE serviced = 0 ORDER BY DATE ASC LIMIT 10 ");
+        //SELECT * FROM `clients` INNER JOIN specialists ON clients.specialists_id = specialists.id WHERE serviced = 0
         $stmt->execute();
         $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
@@ -41,6 +43,31 @@ class ClientService
             array_push($clientsObjs, new Client($this->pdo, $client));
         }
         return $clientsObjs;
+    }
+    public function avgTime($clientsId, $specId){
+        $stmt = $this->pdo->prepare("SELECT specialists.avg_time FROM clients INNER JOIN specialists ON clients.specialists_id = specialists.id WHERE clients.id = :clients_id");
+        $stmt->execute(array(
+            ':clients_id' => $clientsId,
+        ));
+        $avgTime = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE serviced = 0 AND specialists_id = ?");
+        $stmt->execute([$specId]);
+        $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        for($i = 0; $i < sizeof($arr); $i++){
+            if($arr[$i]['id'] == $clientsId){
+                $index = $i + 1;
+                break;
+            }
+        }
+        if(isset($index)){
+            $timeService = new TimeService($this->pdo);
+            $avgTimeSecs = $timeService->timeToSecs($avgTime['avg_time']);
+            $avg = $avgTimeSecs * $index;
+            return $timeService->secsToTime($avg);
+        }
+        return 0;
     }
 
 }

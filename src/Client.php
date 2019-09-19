@@ -31,10 +31,6 @@ class Client{
     public function getDate(){
         return $this->date;
     }
-    // Returns how much time was taken to service the client
-    public function getTimeDt(){
-
-    }
 
 
 }
