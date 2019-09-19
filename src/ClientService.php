@@ -1,6 +1,7 @@
 <?php
 include('Client.php');
 include('TimeService.php');
+require_once('Specialist.php');
 
 class ClientService
 {
@@ -44,19 +45,19 @@ class ClientService
         }
         return $clientsObjs;
     }
-    public function avgTime($clientsId, $specId){
+    public function avgTime($client, $specialist){
         $stmt = $this->pdo->prepare("SELECT specialists.avg_time FROM clients INNER JOIN specialists ON clients.specialists_id = specialists.id WHERE clients.id = :clients_id");
         $stmt->execute(array(
-            ':clients_id' => $clientsId,
+            ':clients_id' => $client->getId(),
         ));
         $avgTime = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE serviced = 0 AND specialists_id = ?");
-        $stmt->execute([$specId]);
+        $stmt->execute([$specialist->getId()]);
         $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         for($i = 0; $i < sizeof($arr); $i++){
-            if($arr[$i]['id'] == $clientsId){
+            if($arr[$i]['id'] == $client->getId()){
                 $index = $i + 1;
                 break;
             }
@@ -65,9 +66,30 @@ class ClientService
             $timeService = new TimeService($this->pdo);
             $avgTimeSecs = $timeService->timeToSecs($avgTime['avg_time']);
             $avg = $avgTimeSecs * $index;
-            return $timeService->secsToTime($avg);
+            return $avg;
+            //return $timeService->secsToTime($avg);
         }
         return 0;
+    }
+
+    public function timeLeft($specId, $client){
+        $timeService = new TimeService($this->pdo);
+
+        $stmt = $this->pdo->prepare("SELECT * FROM specialists WHERE id = ?");
+        $stmt->execute([$specId]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        $specialist = new Specialist($this->pdo, $data);
+        
+        $last = date("H:i:s",strtotime($specialist->getLastTime()));
+        $current = new DateTime();
+        $timeLeft = $timeService->timeToSecs($last) + $this->avgTime($client, $specialist) - $timeService->timeToSecs($current->format('H:i:s'));
+        if($timeLeft > 0){
+            return $timeService->secsToTime($timeLeft);
+        }else{
+            return '00:00:00';
+        }
+        
     }
 
 }

@@ -1,6 +1,8 @@
 <?php
 include('config.php');
 
+date_default_timezone_set('Europe/Vilnius');
+
 $server = $config['db']['server'];
 $dbname = $config['db']['dbname'];
 $username = $config['db']['username'];

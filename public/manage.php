@@ -28,7 +28,7 @@
             echo "<td>" . $client->getName() . "</td>";
             echo "<td>" . $client->getSpecialistId() . "</td>";
             echo "<td>" . $client->getDate() . "</td>";
-            echo "<td>" . $clientService->avgTime($client->getId(), $client->getSpecialistId()) . "</td>";
+            echo "<td>" . $clientService->timeLeft($client->getSpecialistId(), $client) . "</td>";
                 
             /*echo "<form method='POST' action='remove.php'>";
             echo "<input type='hidden' name='token' value='" . $token . "'></input>";
@@ -46,6 +46,8 @@
 
             echo "</tr>";
         }
+        //$dt = new DateTime();
+        //echo "<h1>" . $dt->format('H:i:s') . "</h1>";
 ?>
     </table>
 </body>
