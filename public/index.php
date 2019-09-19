@@ -9,31 +9,45 @@ include_once("../src/Token.php");
 ?>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 <body>
-  <form method="GET" action="register.php"> 
-    <label for="name">Your name</label>
-    <input type="text" name="name">
-    <input type="hidden" name="token" value="<?php echo Token::generate() ?>">
-    <select name="specialist_id">
-        <?php
-        $specialistService = new SpecialistService($pdo);
-        $specialists = $specialistService->getAllSpecialists();
-        foreach($specialists as $specialist){
-            echo "<option value='" . $specialist->getId() . "'>" . $specialist->getName() . "</option>";
-        } 
-        ?>
-    </select>
-    <button type="submit">Register</button>  
-  </form>
-  <?php
-    if(isset($_SESSION['response'])){
-        echo $_SESSION['response'];
-        unset($_SESSION['response']);
-
-        echo $_SESSION['link'];
-        unset($_SESSION['link']);
-    }
-  ?>
+    <div class="app">
+        <div class="form-container">
+            <div class="form">
+                <form method="GET" action="register.php"> 
+                    <div class="input">
+                        <label for="name">Your name</label>
+                        <br>
+                        <input type="text" name="name">
+                    </div>
+                    <input type="hidden" name="token" value="<?php echo Token::generate() ?>">
+                    <div class="input">
+                        <select name="specialist_id">
+                            <?php
+                            $specialistService = new SpecialistService($pdo);
+                            $specialists = $specialistService->getAllSpecialists();
+                            foreach($specialists as $specialist){
+                                echo "<option value='" . $specialist->getId() . "'>" . $specialist->getName() . "</option>";
+                            } 
+                            ?>
+                        </select>
+                    </div>
+                    <button type="submit">Register</button>  
+                </form>
+                <?php
+                    if(isset($_SESSION['response'])){
+                        echo "<div class='feedback'>" . $_SESSION['response'] . "</div>";
+                        unset($_SESSION['response']);
+                    }
+                    if(isset($_SESSION['link'])){
+                        echo "<div class='feedback'>" . $_SESSION['link'] . "</div>";
+                        unset($_SESSION['link']);
+                    }
+                ?>
+                </div>
+            </div>
+    </div>
+  </div>
 </body>
 </html>
