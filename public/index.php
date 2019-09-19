@@ -3,10 +3,9 @@
 session_start();
 clearstatcache();
 
-include("../resources/dbconnection.php");
-include("../src/SpecialistService.php");
-
-
+include_once("../resources/dbconnection.php");
+include_once("../src/SpecialistService.php");
+include_once("../src/Token.php");
 ?>
 <html>
 <head>
@@ -15,6 +14,7 @@ include("../src/SpecialistService.php");
   <form method="GET" action="register.php"> 
     <label for="name">Your name</label>
     <input type="text" name="name">
+    <input type="hidden" name="token" value="<?php echo Token::generate() ?>">
     <select name="specialist_id">
         <?php
         $specialistService = new SpecialistService($pdo);

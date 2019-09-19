@@ -28,7 +28,7 @@
             echo "<td>" . $client->getName() . "</td>";
             echo "<td>" . $client->getSpecialistId() . "</td>";
             echo "<td>" . $client->getDate() . "</td>";
-            echo "<td>" . $clientService->timeLeft($client->getSpecialistId(), $client) . "</td>";
+            echo "<td>" . $client->timeLeft() . "</td>";
                 
             /*echo "<form method='POST' action='remove.php'>";
             echo "<input type='hidden' name='token' value='" . $token . "'></input>";

@@ -1,5 +1,5 @@
 <?php
-include('SpecialistService.php');
+include_once('SpecialistService.php');
 
 class TimeService
 {

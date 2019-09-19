@@ -1,5 +1,5 @@
 <?php
-include('Specialist.php');
+include_once('Specialist.php');
 
 class SpecialistService
 {

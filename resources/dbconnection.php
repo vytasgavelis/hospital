@@ -1,5 +1,5 @@
 <?php
-include('config.php');
+include_once('config.php');
 
 date_default_timezone_set('Europe/Vilnius');
 
@@ -27,7 +27,8 @@ $clientsTblQuery = "CREATE TABLE IF NOT EXISTS clients(
     specialists_id 		INT,
     FOREIGN KEY (specialists_id)  REFERENCES specialists(id),
     serviced            BOOLEAN               NOT NULL DEFAULT 0,
-    date                DATETIME              NOT NULL
+    date                DATETIME              NOT NULL,
+    token               VARCHAR (255)         NOT NULL
     )";
 
 $timesTblQuery = "CREATE TABLE IF NOT EXISTS times(
