@@ -30,6 +30,9 @@ include_once("../src/Token.php");
     if(isset($_SESSION['response'])){
         echo $_SESSION['response'];
         unset($_SESSION['response']);
+
+        echo $_SESSION['link'];
+        unset($_SESSION['link']);
     }
   ?>
 </body>
