@@ -1,20 +1,26 @@
 <?php
+session_start();
 
 include_once('../src/ClientService.php');
 include_once('../resources/config.php');
 include_once('../resources/dbconnection.php');
 include_once('../src/Token.php');
 
-session_start();
 $clientService = new ClientService($pdo);
-if(isset($_GET['name'], $_GET['specialist_id']) && $_GET['name'] != ""){
+if(isset($_GET['name']) && ($_GET['name'] == "" || preg_match('/\s/', $_GET['name']))){
+    $_SESSION['response'] = "Vardo formatas ne toks.";
+    $_SESSION['name'] = $_GET['name'];
+}else if(isset($_GET['name'], $_GET['specialist_id'])){
     $link = 'localhost/appointment.php?token=' . $_GET['token'];
     $_SESSION['response'] = $clientService->addClient($_REQUEST);
     $_SESSION['link'] = $link;
-}else if(isset($_GET['name']) && $_GET['name'] == ""){
-    $_SESSION['response'] = "Prašome užpildyti vardo laukelį";
 }else{
     $_SESSION['response'] = "Įvyko klaida, kreipkitės telefonu.";
 }
+if(isset($_GET['name'], $_GET['specialist_id'])){
+    $_SESSION['name'] = $_GET['name'];
+    $_SESSION['id'] = $_GET['specialist_id'];
+}
+
 
 header('Location:index.php');

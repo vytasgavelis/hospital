@@ -1,7 +1,6 @@
 <?php
 
 session_start();
-clearstatcache();
 
 include_once("../resources/dbconnection.php");
 include_once("../src/SpecialistService.php");
@@ -21,7 +20,7 @@ include_once("../src/Token.php");
                     <div class="input">
                         <label for="name">Your name</label>
                         <br>
-                        <input type="text" name="name">
+                        <input type="text" name="name" value="<?php if(isset($_SESSION['name'])){echo $_SESSION['name'];unset($_SESSION['name']);}?>">
                     </div>
                     <input type="hidden" name="token" value="<?php echo Token::generateNoSession(); ?>">
                     <div class="input">
@@ -30,7 +29,13 @@ include_once("../src/Token.php");
                             $specialistService = new SpecialistService($pdo);
                             $specialists = $specialistService->getAllSpecialists();
                             foreach ($specialists as $specialist) {
-                                echo "<option value='" . $specialist->getId() . "'>" . $specialist->getName() . "</option>";
+                                if(isset($_SESSION['id']) && $specialist->getId() == $_SESSION['id']){
+                                    echo "<option selected='selected' value='" . $specialist->getId() . "'>" . $specialist->getName() . "</option>";
+                                    unset($_SESSION['id']);
+                                }else{
+                                    echo "<option value='" . $specialist->getId() . "'>" . $specialist->getName() . "</option>";
+                                }
+                                echo $specialist->getId() . " " . $_SESSION['id'];
                             }
                             ?>
                         </select>
