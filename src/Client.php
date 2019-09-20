@@ -77,6 +77,19 @@ class Client{
         $specialistData = $stmt->fetch(PDO::FETCH_ASSOC);
         return new Specialist($this->pdo, $specialistData);
     }
+    public function isLast(){
+        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE specialists_id = :specialists_id AND id = :client_id ORDER BY DATE DESC LIMIT 1");
+        $stmt->execute(array(
+            ':specialists_id' => $this->specialistId,
+            ':client_id' => $this->id
+        ));
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if(sizeof($data) > 0){
+           return true;
+        }
+        return false;
+    }
     public function getId(){
         return $this->id;
     }

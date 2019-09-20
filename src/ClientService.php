@@ -17,7 +17,7 @@ class ClientService
             ':name'         => $request['name'],
             ':date'         => date('Y/m/d H:i:s'),
             ':specialist_id'   => $request['specialist_id'],
-            ':token'        => $request['token']
+            ':token'        => str_replace('+', '', $request['token']) // because browser considers '+' as a ' '
         ));
         if($stmt){
             $response = "Užregistruota sėkmingai.";
@@ -48,7 +48,7 @@ class ClientService
     }
     public function getClientByToken($token){
         $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE token = ?");
-        //$token = str_replace(' ', '', $token);
+        //$token = str_replace('+', '', $token);
         $stmt->execute([$token]);
         $client = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if(sizeof($client) > 0){
