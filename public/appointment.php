@@ -53,7 +53,7 @@ $client = $clientService->getClientByToken($_GET['token']);
                     if(is_null($client)) {
                         echo "Neteisinga nuoroda";
                     }else if(!$client->isServiced() ){
-                        echo $client->timeLeft();
+                        echo $client->getSpecialist()->timeLeft($client);
                     }else{
                         echo "Jūs jau aptarnautas.";
                     }             

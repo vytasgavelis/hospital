@@ -21,14 +21,10 @@ class Client{
         $this->date = $data['date'];   
         $this->token = $data['token'];   
     }
-    public function timeLeft(){
+    /*public function timeLeft(){
         $timeService = new TimeService($this->pdo);
-
-        $stmt = $this->pdo->prepare("SELECT * FROM specialists WHERE id = ?");
-        $stmt->execute([$this->specialistId]);
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        $specialist = new Specialist($this->pdo, $data);
+        $specialist = $this->getSpecialist();
         
         $last = date("H:i:s",strtotime($specialist->getLastTime()));
         $current = new DateTime();
@@ -63,10 +59,9 @@ class Client{
             $avgTimeSecs = $timeService->timeToSecs($avgTime['avg_time']);
             $avg = $avgTimeSecs * $index;
             return $avg;
-            //return $timeService->secsToTime($avg);
         }
         return 0;
-    }
+    }*/
 
     public function isServiced(){
         return $this->serviced == 1;
