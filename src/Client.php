@@ -71,6 +71,12 @@ class Client{
     public function isServiced(){
         return $this->serviced == 1;
     }
+    public function getSpecialist($id){
+        $stmt = $this->pdo->prepare("SELECT * FROM specialists WHERE id = ?");
+        $stmt->execute([$id]);
+        $specialistData = $stmt->fetch(PDO::FETCH_ASSOC);
+        return new Specialist($this->pdo, $specialistData);
+    }
     public function getId(){
         return $this->id;
     }

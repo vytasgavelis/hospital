@@ -48,10 +48,9 @@ class ClientService
     }
     public function getClientByToken($token){
         $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE token = ?");
-        $token = str_replace(' ', '', $token);
+        //$token = str_replace(' ', '', $token);
         $stmt->execute([$token]);
         $client = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         if(sizeof($client) > 0){
             return new Client($this->pdo, $client[0]);
         }else{
