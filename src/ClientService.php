@@ -46,6 +46,20 @@ class ClientService
         }
         return $clientsObjs;
     }
+    public function getClientsFromSpecialist($specId){
+        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE serviced = 0 AND specialists_id = :specId ORDER BY DATE ASC  ");
+        //SELECT * FROM `clients` INNER JOIN specialists ON clients.specialists_id = specialists.id WHERE serviced = 0
+        $stmt->execute(array(
+            'specId' => $specId
+        ));
+        $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $clientsObjs = array();
+        foreach($clients as $client){
+            array_push($clientsObjs, new Client($this->pdo, $client));
+        }
+        return $clientsObjs;
+    }
     public function getClientByToken($token){
         $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE token = ?");
         //$token = str_replace('+', '', $token);
@@ -55,6 +69,31 @@ class ClientService
             return new Client($this->pdo, $client[0]);
         }else{
             return null;
+        }
+    }
+    public function swapWithPrevious($client){
+        $clients = $this->getClientsFromSpecialist($client->getSpecialist()->getId());
+
+        for($i = 0; $i < sizeof($clients); $i++){
+            if($clients[$i]->getId() == $client->getId()){
+                $index = $i + 1;
+                break;
+            }
+        }
+
+        if(isset($index)){
+            $stmt = $this->pdo->prepare("UPDATE clients SET
+            date = :date
+            WHERE id = :original_id");
+            $stmt->execute(array(
+                ':date' => $client->getDate(),
+                ':original_id' => $clients[$index]->getId(),
+            ));
+
+            $stmt->execute(array(
+                ':date' => $clients[$index]->getDate(),
+                ':original_id' => $client->getId(),
+            ));
         }
     }
 

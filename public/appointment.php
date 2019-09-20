@@ -62,7 +62,10 @@ $client = $clientService->getClientByToken($_GET['token']);
                 <div class="delete-container">
                     <?php 
                     if(!is_null($client)){
-                        echo "<a class='delete' href='cancel.php?token=" . $_GET['token'] . "'>Atšaukti</a>";
+                        echo "<div class='action'><a class='delete' href='cancel.php?token=" . $_GET['token'] . "'>Atšaukti</a></div>";
+                        if(!$client->isLast()){
+                            echo "<div class='action'><a class='delay' href='delay.php?token=" . $_GET['token'] . "'>Pavėlinti</a></div>";
+                        }
                     }
                      ?>
                 </div>

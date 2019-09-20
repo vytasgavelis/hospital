@@ -86,12 +86,28 @@ body{
     background: #f44336;  
     margin-left: auto;
     margin-right: auto;
-    width: 150px;
     color: white;
     text-decoration:none;
 }
 .delete:hover{
     background-color: red;
+}
+.delay{
+    padding:15px;
+    font-size:2rem;
+    background: #8e1686;  
+    margin-left: auto;
+    margin-right: auto;
+
+    color: white;
+    text-decoration:none; 
+}
+.delay:hover{
+    background: #6e168e;
+}
+.action{
+    margin-top: 50px;
+
 }
 
 

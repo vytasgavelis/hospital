@@ -71,21 +71,20 @@ class Client{
     public function isServiced(){
         return $this->serviced == 1;
     }
-    public function getSpecialist($id){
+    public function getSpecialist(){
         $stmt = $this->pdo->prepare("SELECT * FROM specialists WHERE id = ?");
-        $stmt->execute([$id]);
+        $stmt->execute([$this->specialistId]);
         $specialistData = $stmt->fetch(PDO::FETCH_ASSOC);
         return new Specialist($this->pdo, $specialistData);
     }
     public function isLast(){
-        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE specialists_id = :specialists_id AND id = :client_id ORDER BY DATE DESC LIMIT 1");
+        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE specialists_id = :specialists_id ORDER BY DATE DESC LIMIT 1");
         $stmt->execute(array(
             ':specialists_id' => $this->specialistId,
-            ':client_id' => $this->id
         ));
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if(sizeof($data) > 0){
+        if($data['id'] == $this->id){
            return true;
         }
         return false;
