@@ -84,6 +84,18 @@ class Client{
         }
         return false;
     }
+    public function isFirst(){
+        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE specialists_id = :specialists_id AND serviced = 0 ORDER BY DATE ASC LIMIT 1");
+        $stmt->execute(array(
+            ':specialists_id' => $this->specialistId,
+        ));
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($data['id'] == $this->id){
+           return true;
+        }
+        return false;
+    }
     public function getId(){
         return $this->id;
     }

@@ -13,6 +13,7 @@ include_once("../src/Token.php");
 </head>
 
 <body>
+    <?php include_once("navbar.html"); ?>
     <div class="container">
         <div class="content">
             <div class="inner">

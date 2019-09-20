@@ -11,5 +11,5 @@
     }else{
         echo "ur not last";
     }
-header('Location:index.php');
+header('Location:appointment.php?token=' . $_GET['token']);
 ?>

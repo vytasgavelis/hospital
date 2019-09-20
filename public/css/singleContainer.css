@@ -4,6 +4,8 @@
 body{
     background-color: #1ab188;
     color: white;
+    margin: 0;
+    padding: 0;
 }
 
 .container{
@@ -95,7 +97,7 @@ body{
 .delay{
     padding:15px;
     font-size:2rem;
-    background: #8e1686;  
+    background: #b11a43;  
     margin-left: auto;
     margin-right: auto;
 
@@ -103,7 +105,7 @@ body{
     text-decoration:none; 
 }
 .delay:hover{
-    background: #6e168e;
+    background: #9f173c;
 }
 .action{
     margin-top: 50px;

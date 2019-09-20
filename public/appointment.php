@@ -32,6 +32,7 @@ $client = $clientService->getClientByToken($_GET['token']);
         updateTime();
         setInterval(updateTime, 2000);*/
     </script>
+    <?php include_once("navbar.html"); ?>
     <div class="container">
         <div class="content">
             <div class="inner">

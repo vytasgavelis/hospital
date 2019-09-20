@@ -5,7 +5,6 @@
     include_once('../src/Token.php');
     include_once('../resources/dbconnection.php');
 
-    $token = Token::generate();
 ?>
 <html>
 <head>
@@ -24,7 +23,6 @@
                 <th>Vardas</th>
                 <th>Specialistas</th>
                 <th>Numatytas laikas</th>
-                <th>Veiksmas</th>
             </tr>
             <?php
                 $clientService = new ClientService($pdo);
@@ -39,17 +37,6 @@
                     echo "<td>" . $client->getName() . "</td>"; 
                     echo "<td>" . $client->getSpecialist()->getName() . "</td>"; 
                     echo "<td>" . $client->getSpecialist()->timeLeft($client) . "</td>"; 
-                    echo "<td>";
-
-                        echo "<form method='POST' action='service.php'>";
-                        echo "<input type='hidden' name='token' value='" . $token . "'></input>";
-                        echo "<input type='hidden' name='date' value='" . $client->getDate() . "'></input>";
-                        echo "<input type='hidden' name='specialist_id' value='" . $client->getSpecialistId() . "'></input>";
-                        echo "<input type='hidden' name='id' value='" . $client->getId() . "'></input>";
-                        echo "<button type='submit'>Service</button>";
-                        echo "</form>";
-
-                    echo "</td>";
                     echo "</tr>";
                 }
             ?>
