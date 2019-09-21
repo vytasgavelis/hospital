@@ -62,3 +62,6 @@ body{
 .first:hover{
     background-color: #9f173c !important;
 }
+.form{
+    margin: 25px;
+}
