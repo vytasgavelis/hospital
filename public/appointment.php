@@ -3,9 +3,6 @@ session_start();
 include_once('../resources/dbconnection.php');
 include_once('../src/ClientService.php');
 
-$clientService = new ClientService($pdo);
-$client = $clientService->getClientByToken($_GET['token']);
-
 ?>
 <html>
 
@@ -16,56 +13,36 @@ $client = $clientService->getClientByToken($_GET['token']);
 </head>
 
 <body>
-    <script>
-        /*function updateTime(token){
-            var xmlhttp = new XmlHttpRequest();
-            xmlhttp.onreadystatechange = function(){
-                if(this.readyState == 4 $$ this.status == 200){
-                    var text = this.responseText;
-                    document.getElementById("timeLeft").innerHTML = text;
-                }
-            };
-            xmlhttp.open("GET", "../src/updateTime.php?token=" + token, true);
-            xmlhttp.send();    
-        }
-        
-        updateTime();
-        setInterval(updateTime, 2000);*/
-    </script>
     <?php include_once("navbar.html"); ?>
     <div class="container">
         <div class="content">
             <div class="inner">
-                <div class="info">
-                    <?php if(!is_null($client)) echo $client->getName(); ?>
-                </div>
-                <div class="info">
-                    <?php if(!is_null($client)) echo "Užsiregistravote: " . $client->getDate(); ?>
-                </div>
-                <div class="info">
-                    <?php
+                <?php
+                    $clientService = new ClientService($pdo);
+                    //Client is searched by id but then its token is validated.
+                    $client = $clientService->getClientByToken($_GET['token'], $_GET['id']);
+
                     if(!is_null($client)){
-                        echo "Specialistas: " . $client->getSpecialist($client->getSpecialistId())->getName(); 
+                        echo "<div class='info'>" . $client->getName() . "</div>";
+                        echo "<div class='info'> Užsiregistravote: " . $client->getDate() . "</div>";
+                        echo "<div class='info'> Specialistas: " . $client->getSpecialist()->getName() . "</div>";
                     }
-                     ?>
-                </div>
+                ?>               
                 <div class="time">
                     <?php
                     if(is_null($client)) {
                         echo "Neteisinga nuoroda";
-                    }else if(!$client->isServiced() ){
-                        echo $client->getSpecialist()->timeLeft($client);
                     }else{
-                        echo "Jūs jau aptarnautas.";
-                    }             
+                        echo $client->getSpecialist()->timeLeft($client);
+                    }           
                     ?>
                 </div>
                 <div class="delete-container">
                     <?php 
                     if(!is_null($client)){
-                        echo "<div class='action'><a class='delete' href='cancel.php?token=" . $_GET['token'] . "'>Atšaukti</a></div>";
+                        echo "<div class='action'><a class='delete' href='cancel.php?token=" . $_GET['token'] . "&id=" . $client->getId() . "'>Atšaukti</a></div>";
                         if(!$client->isLast()){
-                            echo "<div class='action'><a class='delay' href='delay.php?token=" . $_GET['token'] . "'>Pavėlinti</a></div>";
+                            echo "<div class='action'><a class='delay' href='delay.php?token=" . $_GET['token'] . "&id=" . $client->getId() . "'>Pavėlinti</a></div>";
                         }
                     }
                      ?>

@@ -76,13 +76,12 @@ class ClientService
         }
         return $clientsObjs;
     }
-    public function getClientByToken($token)
+    public function getClientByToken($token, $id)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE token = ?");
-        //$token = str_replace('+', '', $token);
-        $stmt->execute([$token]);
+        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE id = ? AND serviced = 0");
+        $stmt->execute([$id]);
         $client = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if(sizeof($client) > 0){
+        if(sizeof($client) > 0 && $client[0]['token'] == $token){
             return new Client($this->pdo, $client[0]);
         }else{
             return null;
@@ -113,6 +112,11 @@ class ClientService
                 ':original_id' => $client->getId(),
             ));
         }
+    }
+    public function getLast(){
+        $stmt = $this->pdo->prepare("SELECT * FROM clients ORDER BY id DESC LIMIT 1");
+        $stmt->execute();
+        return new Client($this->pdo, $stmt->fetch(PDO::FETCH_ASSOC));
     }
 
 

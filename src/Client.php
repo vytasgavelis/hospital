@@ -12,7 +12,8 @@ class Client{
     protected $date;
     protected $token;
 
-    function __construct($pdo, $data){
+    function __construct($pdo, $data)
+    {
         $this->pdo = $pdo;
         $this->id = $data['id'];
         $this->name = $data['clients_name'];
@@ -21,7 +22,8 @@ class Client{
         $this->date = $data['date'];   
         $this->token = $data['token'];   
     }
-    public function timeLeft(){
+    public function timeLeft()
+    {
         $timeService = new TimeService($this->pdo);
         
         $specialist = $this->getSpecialist();
@@ -37,7 +39,8 @@ class Client{
         
     }
 
-    public function avgTime(){
+    public function avgTime()
+    {
         $stmt = $this->pdo->prepare("SELECT specialists.avg_time FROM clients INNER JOIN specialists ON clients.specialists_id = specialists.id WHERE clients.id = :clients_id");
         $stmt->execute(array(
             ':clients_id' => $this->id,
@@ -63,16 +66,19 @@ class Client{
         return 0;
     }
 
-    public function isServiced(){
+    public function isServiced()
+    {
         return $this->serviced == 1;
     }
-    public function getSpecialist(){
+    public function getSpecialist()
+    {
         $stmt = $this->pdo->prepare("SELECT * FROM specialists WHERE id = ?");
         $stmt->execute([$this->specialistId]);
         $specialistData = $stmt->fetch(PDO::FETCH_ASSOC);
         return new Specialist($this->pdo, $specialistData);
     }
-    public function isLast(){
+    public function isLast()
+    {
         $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE specialists_id = :specialists_id ORDER BY DATE DESC LIMIT 1");
         $stmt->execute(array(
             ':specialists_id' => $this->specialistId,
@@ -84,7 +90,8 @@ class Client{
         }
         return false;
     }
-    public function isFirst(){
+    public function isFirst()
+    {
         $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE specialists_id = :specialists_id AND serviced = 0 ORDER BY DATE ASC LIMIT 1");
         $stmt->execute(array(
             ':specialists_id' => $this->specialistId,
@@ -96,19 +103,24 @@ class Client{
         }
         return false;
     }
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
     }
-    public function getName(){
+    public function getName()
+    {
         return $this->name;
     }
-    public function getSpecialistId(){
+    public function getSpecialistId()
+    {
         return $this->specialistId;
     }
-    public function getDate(){
+    public function getDate()
+    {
         return $this->date;
     }
-    public function getToken(){
+    public function getToken()
+    {
         return $this->token;
     }
 

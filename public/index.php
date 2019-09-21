@@ -45,7 +45,7 @@ include_once("../src/Token.php");
                 </form>
                 <?php
                 if (isset($_SESSION['response'])) {
-                    echo "<div class='feedback'>" . $_SESSION['response'] . "</div>";
+                     //echo "<div class='feedback'>" . $_SESSION['response'] . "</div>";
                     unset($_SESSION['response']);
                 }
                 if (isset($_SESSION['link'])) {

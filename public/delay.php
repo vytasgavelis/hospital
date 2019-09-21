@@ -3,7 +3,7 @@
     include_once('../src/ClientService.php');
 
     $clientService = new ClientService($pdo);
-    $client = $clientService->getClientByToken($_GET['token']);
+    $client = $clientService->getClientByToken($_GET['token'], $_GET['id']);
 
     if(!$client->isLast()){
         echo $clientService->swapWithPrevious($client);

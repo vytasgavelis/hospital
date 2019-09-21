@@ -11,7 +11,8 @@ if(isset($_GET['name']) && !ctype_alpha($_GET['name'])){
     $_SESSION['response'] = "Vardo formatas ne toks.";
     $_SESSION['name'] = $_GET['name'];
 }else if(isset($_GET['name'], $_GET['specialist_id'])){
-    $link = 'localhost/appointment.php?token=' . $_GET['token'];
+    $id = $clientService->getLast()->getId() + 1;
+    $link = 'localhost/appointment.php?token=' . $_GET['token'] . "&id=" . $id;
     $_SESSION['response'] = $clientService->addClient($_REQUEST);
     $_SESSION['link'] = $link;
 }else{
