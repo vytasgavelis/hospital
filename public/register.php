@@ -7,7 +7,7 @@ include_once('../resources/dbconnection.php');
 include_once('../src/Token.php');
 
 $clientService = new ClientService($pdo);
-if(isset($_GET['name']) && ($_GET['name'] == "" || preg_match('/\s/', $_GET['name']))){
+if(isset($_GET['name']) && !ctype_alpha($_GET['name'])){
     $_SESSION['response'] = "Vardo formatas ne toks.";
     $_SESSION['name'] = $_GET['name'];
 }else if(isset($_GET['name'], $_GET['specialist_id'])){

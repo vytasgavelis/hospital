@@ -46,6 +46,18 @@ class ClientService
         }
         return $clientsObjs;
     }
+    public function getClientsByDay($day)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE DAY(date) = ? AND serviced = 0 ORDER BY DATE ASC LIMIT 10");
+        $stmt->execute([$day]);
+        $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $clientsObjs = array();
+        foreach($clients as $client){
+            array_push($clientsObjs, new Client($this->pdo, $client));
+        }
+        return $clientsObjs;
+    }
     public function getClientsFromSpecialist($specId){
         $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE serviced = 0 AND specialists_id = :specId ORDER BY DATE ASC  ");
         //SELECT * FROM `clients` INNER JOIN specialists ON clients.specialists_id = specialists.id WHERE serviced = 0

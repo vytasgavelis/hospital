@@ -65,3 +65,11 @@ body{
 .form{
     margin: 25px;
 }
+.days a{
+    margin-left: 12px;
+    text-decoration: none;
+    color: white;
+}
+.currentDay{
+    color: #9f173c !important;
+}
