@@ -19,18 +19,18 @@ class SpecialistService
         }
         return $specialistsObjs;
     }
-    public function updateLastTime($id, $lastTime){
+    public function updateLastTime($specialist, $lastTime){
         $stmt = $this->pdo->prepare("UPDATE specialists SET last_time = :last_time WHERE id = :id");
         $stmt->execute(array(
             ':last_time' => $lastTime,
-            ':id' => $id
+            ':id' => $specialist->getId()
         ));
     }
-    public function updateAverageTime($id, $avg){
+    public function updateAverageTime($specialist, $avg){
         $stmt = $this->pdo->prepare("UPDATE specialists SET avg_time = :avg_time WHERE id = :id");
         $stmt->execute(array(
             ':avg_time' => $avg,
-            ':id' => $id
+            ':id' => $specialist->getId()
         ));
     }
 }

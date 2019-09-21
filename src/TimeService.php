@@ -1,45 +1,49 @@
 <?php
 include_once('SpecialistService.php');
+include_once('Specialist.php');
 
 class TimeService
 {
     protected $pdo;
 
-    function __construct($pdo){
+    function __construct($pdo)
+    {
         $this->pdo = $pdo;
     }
 
-    public function addTime($data){
-        $stmt = $this->pdo->prepare("SELECT last_time from specialists WHERE id = ?");
+    public function addTime($data)
+    {
+        $stmt = $this->pdo->prepare("SELECT * from specialists WHERE id = ?");
         $stmt->execute([$data['specialist_id']]);
-        $lastTime = $stmt->fetch(PDO::FETCH_ASSOC);
+        $specialist = new Specialist($this->pdo, $stmt->fetch(PDO::FETCH_ASSOC));
         
-        $clientTime = strtotime($data['date']);
-        $specTime = strtotime($lastTime['last_time']);
+        $clientRegDate = strtotime($data['date']);
+        $specTime = strtotime($specialist->getLastTime());
         
         // Amount of time it took specialist to service the client.
-        $deltaInSecs = $clientTime - $specTime;
-        // Only update times if the time it took specialist to service the client is bigger than 0.
+        $deltaInSecs = $clientRegDate - $specTime;
+        // Only update times if delta is bigger than 0.
         if($deltaInSecs >= 0){    
             //Create new entry in times table.
             $stmt = $this->pdo->prepare("INSERT INTO times (specialists_id, time) VALUES(:id, :time)");
             $stmt->execute(array(
-                ':id' => $data['specialist_id'],
+                ':id' => $specialist->getId(),
                 ':time' => $this->secsToTime($deltaInSecs)
             ));
 
             //Update the time of the last visit.
             $specialistService = new SpecialistService($this->pdo);
-            $specialistService->updateLastTime($data['specialist_id'], $data['date']);
+            $specialistService->updateLastTime($specialist, $data['date']);
 
             // Calculate and update average time of specialist.
             $avg = $this->average($data['specialist_id']);
-            $specialistService->updateAverageTime($data['specialist_id'], $avg);
+            $specialistService->updateAverageTime($specialist, $avg);
         }
     }
 
     // Average time it takes for specialist to service the client.
-    public function average($id){
+    public function average($id)
+    {
         $stmt = $this->pdo->prepare("SELECT * FROM times WHERE specialists_id = ?");
         $stmt->execute([$id]);
         $times = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -57,13 +61,15 @@ class TimeService
         return $this->secsToTime($avg);
     }
     // Returns time (H:m:s) as seconds
-    function timeToSecs($time){
+    function timeToSecs($time)
+    {
         $time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $time);
         sscanf($time, "%d:%d:%d", $hours, $minutes, $seconds);
         return $hours * 3600 + $minutes * 60 + $seconds;
     }
     // Returns seconds as time format (H:m:s)
-    function secsToTime($secs){
+    function secsToTime($secs)
+    {
         $hours = floor($secs / 3600);
         $mins = floor($secs / 60 % 60);
         $secs = floor($secs % 60);

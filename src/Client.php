@@ -21,7 +21,7 @@ class Client{
         $this->date = $data['date'];   
         $this->token = $data['token'];   
     }
-    /*public function timeLeft(){
+    public function timeLeft(){
         $timeService = new TimeService($this->pdo);
         
         $specialist = $this->getSpecialist();
@@ -61,7 +61,7 @@ class Client{
             return $avg;
         }
         return 0;
-    }*/
+    }
 
     public function isServiced(){
         return $this->serviced == 1;

@@ -5,16 +5,14 @@
     include_once('../src/Token.php');
     include_once('../resources/dbconnection.php');
 
-    $token = Token::generate();
 ?>
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="css/board.css">
 </head>
 <body>
-    <?php
-    include_once('navbar.html');
-    ?>
+    <?php include_once('navbar.html'); ?>
+
     <div class="row">
         <div class="column side"></div>
 
@@ -36,20 +34,21 @@
                     }else{
                         echo "<tr>"; 
                     }
-                    echo "<td>" . $client->getName() . "</td>"; 
-                    echo "<td>" . $client->getSpecialist()->getName() . "</td>"; 
-                    echo "<td>" . $client->getSpecialist()->timeLeft($client) . "</td>"; 
-                    echo "<td>";
+                        echo "<td>" . $client->getName() . "</td>"; 
+                        echo "<td>" . $client->getSpecialist()->getName() . "</td>"; 
+                        echo "<td>" . $client->timeLeft() . "</td>"; 
+                        echo "<td>";
 
-                        echo "<form method='POST' action='service.php'>";
-                        echo "<input type='hidden' name='token' value='" . $token . "'></input>";
-                        echo "<input type='hidden' name='date' value='" . $client->getDate() . "'></input>";
-                        echo "<input type='hidden' name='specialist_id' value='" . $client->getSpecialistId() . "'></input>";
-                        echo "<input type='hidden' name='id' value='" . $client->getId() . "'></input>";
-                        echo "<button type='submit'>Service</button>";
-                        echo "</form>";
+                            echo "<form method='POST' action='service.php'>";
+                                $token = Token::generate();
+                                echo "<input type='hidden' name='token' value='" . $token . "'></input>";
+                                echo "<input type='hidden' name='date' value='" . $client->getDate() . "'></input>";
+                                echo "<input type='hidden' name='specialist_id' value='" . $client->getSpecialistId() . "'></input>";
+                                echo "<input type='hidden' name='id' value='" . $client->getId() . "'></input>";
+                                echo "<button type='submit'>Service</button>";
+                            echo "</form>";
 
-                    echo "</td>";
+                        echo "</td>";
                     echo "</tr>";
                 }
             ?>
