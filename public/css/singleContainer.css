@@ -73,6 +73,10 @@ body{
     color: white;
     padding: 10px;
 }
+.feedback a{
+    text-decoration: none;
+    color: #168e6e;
+}
 .time{
     font-size: 54px;
     

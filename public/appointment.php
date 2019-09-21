@@ -20,12 +20,15 @@ include_once('../src/ClientService.php');
                 <?php
                     $clientService = new ClientService($pdo);
                     //Client is searched by id but then its token is validated.
-                    $client = $clientService->getClientByToken($_GET['token'], $_GET['id']);
+                    $client = null;
+                    if(isset($_GET['id'], $_GET['token'])){
+                        $client = $clientService->getClientByToken($_GET['token'], $_GET['id']);
 
-                    if(!is_null($client)){
-                        echo "<div class='info'>" . $client->getName() . "</div>";
-                        echo "<div class='info'> Užsiregistravote: " . $client->getDate() . "</div>";
-                        echo "<div class='info'> Specialistas: " . $client->getSpecialist()->getName() . "</div>";
+                        if(!is_null($client)){
+                            echo "<div class='info'>Vardas: " . $client->getName() . "</div>";
+                            echo "<div class='info'> Užsiregistravote: " . $client->getDate() . "</div>";
+                            echo "<div class='info'> Specialistas: " . $client->getSpecialist()->getName() . "</div>";
+                        }
                     }
                 ?>               
                 <div class="time">

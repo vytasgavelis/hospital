@@ -17,16 +17,16 @@
 
         <div class="column middle">
             <div class="days">
+                Dienos<br>
                 <?php
                     // Select distinct days
                     $stmt = $pdo->prepare("SELECT DAY(date) as day FROM clients WHERE serviced = 0 GROUP BY CAST(date AS DATE)");
                     $stmt->execute();
                     $days = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     
-                    //If unable to get wanted day through GET request, pick the first one.
                     if(isset($_GET['day'])){
                         $currentDay = $_GET['day'];
-                    }else if(isset($days[0])){
+                    }else if(isset($days[0])){//If unable to get day through GET request, pick the first one.
                         $currentDay = $days[0]['day'];
                     }else{
                         echo "Klientų eilėje nėra.";
@@ -45,34 +45,34 @@
                 ?>
             </div>
             <table>
-            <tr>
-                <th>Vardas</th>
-                <th>Specialistas</th>
-                <th>Numatytas likęs laikas</th>
-                <th>Registracijos laikas</th>
-            </tr>
-            <?php
-                if(isset($currentDay)){
-                    $clientService = new ClientService($pdo);
-                    $clients = $clientService->getClientsByDay($currentDay);
+                <tr>
+                    <th>Vardas</th>
+                    <th>Specialistas</th>
+                    <th>Numatytas likęs laikas</th>
+                    <th>Registracijos laikas</th>
+                </tr>
+                <?php
+                    if(isset($currentDay)){
+                        $clientService = new ClientService($pdo);
+                        $clients = $clientService->getClientsByDay($currentDay);
 
-                    foreach($clients as $client){
-                        if($client->isFirst()){
-                            echo "<tr class='first'>";
-                            $time = "Aptarnaujamas dabar";
-                        }else{
-                            echo "<tr>"; 
-                            $time = $client->timeLeft();
+                        foreach($clients as $client){
+                            if($client->isFirst()){
+                                echo "<tr class='first'>";
+                                $time = "Aptarnaujamas dabar";
+                            }else{
+                                echo "<tr>"; 
+                                $time = $client->timeLeft();
+                            }
+                            echo "<td>" . $client->getName() . "</td>"; 
+                            echo "<td>" . $client->getSpecialist()->getName() . "</td>"; 
+                            echo "<td>" . $time . "</td>"; 
+                            echo "<td>" . $client->getDate() . "</td>"; 
+
+                            echo "</tr>";
                         }
-                        echo "<td>" . $client->getName() . "</td>"; 
-                        echo "<td>" . $client->getSpecialist()->getName() . "</td>"; 
-                        echo "<td>" . $time . "</td>"; 
-                        echo "<td>" . $client->getDate() . "</td>"; 
-
-                        echo "</tr>";
-                    }
-                }                
-            ?>
+                    }                
+                ?>
             </table>           
         </div>
         

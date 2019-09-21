@@ -10,14 +10,13 @@ if(isset($_GET['id'])){
 
     for($i = 0; $i < 24; $i++){
         if($i < 10){
-            $dateL = '0' . $i . ':00:00';
-            $dateH = '0' . $i . ':59:59';
             $hour = '0' . $i;
-        }
-        else{
-            $dateL = $i . ':00:00';
-            $dateH = $i . ':59:59';
+            $dateL = $hour . ':00:00';
+            $dateH = $hour . ':59:59';
+        }else{
             $hour = $i;
+            $dateL = $hour . ':00:00';
+            $dateH = $hour . ':59:59';
         }
         $stmt = $pdo->prepare("SELECT * FROM clients WHERE TIME(date) between :dateL AND :dateH AND specialists_id = :id");
         $stmt->execute(array(
@@ -25,14 +24,12 @@ if(isset($_GET['id'])){
             ':dateH' => $dateH,
             ':id' => $_GET['id']
         ));
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        $dataArr = array( 
+        $data = array( 
             "time" => $hour,
-            "count" => sizeof($data)
+            "count" => sizeof($stmt->fetchAll(PDO::FETCH_ASSOC))
         );
-        // Append data of certain hour to times array
-        array_push($times, $dataArr);
+        array_push($times, $data);
     }
 }
 
@@ -86,15 +83,14 @@ chart.draw(data, options);
                             // Fill the select options with specialists.
                             $specialistService = new SpecialistService($pdo);
                             $specialists = $specialistService->getAllSpecialists();
-                            foreach ($specialists as $specialist) {
+                            foreach($specialists as $specialist) {
                                 if(isset($_SESSION['id']) && $specialist->getId() == $_SESSION['id']){
                                     echo "<option selected='selected' value='" . $specialist->getId() . "'>" . $specialist->getName() . "</option>";
                                     unset($_SESSION['id']);
                                 }else{
                                     echo "<option value='" . $specialist->getId() . "'>" . $specialist->getName() . "</option>";
                                 }
-                                echo $specialist->getId() . " " . $_SESSION['id'];
-                            //
+                                echo $specialist->getId() . " " . $_SESSION['id']
                             }
                         ?>
                     </select>
@@ -103,12 +99,12 @@ chart.draw(data, options);
             </div>
             <div>
                 <?php 
-                    if(isset($_GET['id'])){
-                        echo "Labiausiai užimti specialisto laikai:";
-                    }
-                    else{
-                        echo "Pasirinkite specialistą ir spauskite rodyti, kad matyti jo laikus.";
-                    }
+                if(isset($_GET['id'])){
+                    echo "Labiausiai užimti specialisto laikai:";
+                }
+                else{
+                    echo "Pasirinkite specialistą ir spauskite rodyti, kad matyti jo laikus.";
+                }
                 ?>
             </div>
             <div id="piechart" align='center'></div>
