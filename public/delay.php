@@ -6,10 +6,7 @@
     $client = $clientService->getClientByToken($_GET['token'], $_GET['id']);
 
     if(!$client->isLast()){
-        echo $clientService->swapWithPrevious($client);
-        
-    }else{
-        echo "ur not last";
+        $clientService->swapWithPrevious($client);      
     }
-header('Location:appointment.php?token=' . $_GET['token']);
+header('Location:appointment.php?token=' . $_GET['token'] . '&id=' . $_GET['id']);
 ?>

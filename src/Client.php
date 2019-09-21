@@ -2,9 +2,9 @@
 include_once('TimeService.php');
 require_once('Specialist.php');
 
-class Client{
+class Client
+{
     protected $pdo;
-
     protected $id;
     protected $name;
     protected $specialistId;
@@ -24,30 +24,23 @@ class Client{
     }
     public function timeLeft()
     {
-        $timeService = new TimeService($this->pdo);
-        
+        $timeService = new TimeService($this->pdo);     
         $specialist = $this->getSpecialist();
         
         $last = date("H:i:s",strtotime($specialist->getLastTime()));
         $current = new DateTime();
+        //Last time + average time - current time
         $timeLeft = $timeService->timeToSecs($last) + $this->avgTime($specialist) - $timeService->timeToSecs($current->format('H:i:s'));
         if($timeLeft > 0){
             return $timeService->secsToTime($timeLeft);
         }else{
             return '00:00:00';
-        }
-        
+        }       
     }
 
     public function avgTime()
     {
-        $stmt = $this->pdo->prepare("SELECT specialists.avg_time FROM clients INNER JOIN specialists ON clients.specialists_id = specialists.id WHERE clients.id = :clients_id");
-        $stmt->execute(array(
-            ':clients_id' => $this->id,
-        ));
-        $avgTime = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE serviced = 0 AND specialists_id = ?");
+        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE serviced = 0 AND specialists_id = ? ORDER BY DATE ASC");
         $stmt->execute([$this->specialistId]);
         $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -59,7 +52,7 @@ class Client{
         }
         if(isset($index)){
             $timeService = new TimeService($this->pdo);
-            $avgTimeSecs = $timeService->timeToSecs($avgTime['avg_time']);
+            $avgTimeSecs = $timeService->timeToSecs($this->getSpecialist()->getAvgTime());
             $avg = $avgTimeSecs * $index;
             return $avg;
         }
@@ -79,7 +72,7 @@ class Client{
     }
     public function isLast()
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE specialists_id = :specialists_id ORDER BY DATE DESC LIMIT 1");
+        $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE specialists_id = :specialists_id AND serviced = 0 ORDER BY DATE DESC LIMIT 1");
         $stmt->execute(array(
             ':specialists_id' => $this->specialistId,
         ));

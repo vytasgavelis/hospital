@@ -90,7 +90,7 @@ chart.draw(data, options);
                                 }else{
                                     echo "<option value='" . $specialist->getId() . "'>" . $specialist->getName() . "</option>";
                                 }
-                                echo $specialist->getId() . " " . $_SESSION['id']
+                                echo $specialist->getId() . " " . $_SESSION['id'];
                             }
                         ?>
                     </select>

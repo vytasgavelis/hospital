@@ -36,16 +36,16 @@ class TimeService
             $specialistService->updateLastTime($specialist, $data['date']);
 
             // Calculate and update average time of specialist.
-            $avg = $this->average($data['specialist_id']);
+            $avg = $this->average($specialist);
             $specialistService->updateAverageTime($specialist, $avg);
         }
     }
 
     // Average time it takes for specialist to service the client.
-    public function average($id)
+    public function average($specialist)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM times WHERE specialists_id = ?");
-        $stmt->execute([$id]);
+        $stmt->execute([$specialist->getId()]);
         $times = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         $sum = 0;

@@ -36,7 +36,7 @@ include_once('../src/ClientService.php');
                     if(is_null($client)) {
                         echo "Neteisinga nuoroda";
                     }else{
-                        echo $client->getSpecialist()->timeLeft($client);
+                        echo $client->timeLeft();
                     }           
                     ?>
                 </div>
