@@ -60,8 +60,11 @@
                             if($client->isFirst()){
                                 echo "<tr class='first'>";
                                 $time = "Aptarnaujamas dabar";
-                            }else{
+                            }else if($client->timeLeft() == '00:00:00'){
                                 echo "<tr>"; 
+                                $time = 'Atsiprašome, specialistas vėluoja.';
+                            }else{
+                                echo "<tr>";
                                 $time = $client->timeLeft();
                             }
                             echo "<td>" . $client->getName() . "</td>"; 

@@ -2,8 +2,8 @@
 $config = array(
     'db' => array(
         'server' => 'eu-cdbr-west-02.cleardb.net',
-        'username' => 'bad5e6b58a951d',
-        'password' => 'aac2cfbe',
-        'dbname' => 'heroku_30a2284aeb2cf02'
+        'username' => 'b2b87a1b64233a',
+        'password' => 'c89b578d',
+        'dbname' => 'heroku_6472ed31cc83478'
     )
 );
