@@ -3,7 +3,7 @@ Apie
 
   2019 NFQ Akademijos stojimo užduotis<br />
   Vytas Gavelis <br />
-  Projektas patalpintas: https://gavhospital.herokuapp.com/index.php <br />
+  Projektas patalpintas: https://hospitalgav.herokuapp.com/index.php <br />
   
 Bibliotekos
 ==========
