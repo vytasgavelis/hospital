@@ -9,7 +9,7 @@ $username = $config['db']['username'];
 $password = $config['db']['password'];
 
 $dsn = 'mysql:host=' . $server . ';dbname=' . $dbname;
-
+//mysql://bad5e6b58a951d:aac2cfbe@eu-cdbr-west-02.cleardb.net/heroku_30a2284aeb2cf02?reconnect=true
 //$dsn = 'mysql:host=' . 'eu-cdbr-west-02.cleardb.net' . ';dbname=heroku_799bada3d1cdc24';
 
 $pdo = new PDO($dsn, $username, $password);

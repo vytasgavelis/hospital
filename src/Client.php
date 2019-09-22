@@ -28,9 +28,8 @@ class Client
         $specialist = $this->getSpecialist();
         
         $last = date("H:i:s",strtotime($specialist->getLastTime()));
-        $current = new DateTime();
         //Last time + average time - current time
-        $timeLeft = $timeService->timeToSecs($last) + $this->avgTime($specialist) - $timeService->timeToSecs($current->format('H:i:s'));
+        $timeLeft = strtotime($last) + $this->avgTime($specialist) - strtotime(date('Y-m-d H:i:s'));
         if($timeLeft > 0){
             return $timeService->secsToTime($timeLeft);
         }else{
