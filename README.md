@@ -1,9 +1,8 @@
 Apie
 ==========
-
-  2019 NFQ Akademijos stojimo užduotis<br />
-  Vytas Gavelis <br />
-  Projektas patalpintas: https://hospitalgav.herokuapp.com/index.php <br />
+2019 NFQ Akademijos stojimo užduotis<br />
+Vytas Gavelis <br />
+Projektas patalpintas: http://vythospital.herokuapp.com/index.php <br />
   
 Bibliotekos
 ==========
@@ -11,7 +10,7 @@ https://developers.google.com/chart/ <br />
 
 Projekto aprašymas
 ==========
-Projekte dominuoja php kalba, javascript panaudotas piešiant statistiką. MVC nekūriau dėl laiko trūkumo. Stengiausi vadovautis OOP principais, kad padaryti kodą suprantamesnį ir labiau palaikomą.
+Projekte dominuoja php kalba, javascript panaudotas piešiant statistiką. MVC nekūriau dėl laiko trūkumo. Vadovavausi OOP principais, kad padaryti kodą suprantamesnį ir labiau palaikomą.
 
 Kaip veikia
 ==========
@@ -42,12 +41,13 @@ Naudojama įdėti apsilankymų laikus į duombazę, apskaičiuoti vidutinį spec
 
 Problemos
 ==========
-Produkcijoje projekte turėtų būti implementuotas laikas kada specialistas dirba, kada ne. Dabar kadangi to nėra, specialistų vidutiniai laikai susidaro kelių dienų ilgio. <br />
+Produkcijoje projekte turėtų būti implementuotas laikas kada specialistas dirba, kada ne. Dabar kadangi to nėra, specialistų vidutiniai laikai susidaro per ilgi. <br />
 Taip pat turėtų būti sukurta prisijungimo sistema specialistams <br />
 
 Kontaktai
 ==========
 gavelisvytas@gmail.com<br />
++37062815944<br />
 https://www.linkedin.com/in/vytas-gavelis-8a7438188/
 
 <h1>Ačiū už dėmesį.</h1>
