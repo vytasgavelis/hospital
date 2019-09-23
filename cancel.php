@@ -7,5 +7,3 @@ if(isset($_GET['token'])){
 }
 
 header('Location:index.php');
-
-?>

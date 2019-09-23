@@ -63,7 +63,9 @@ body{
     background-color: #9f173c !important;
 }
 .form{
-    margin: 25px;
+    /*margin: 25px;*/
+    display: block;
+    margin: auto;
 }
 .days a{
     margin-left: 12px;

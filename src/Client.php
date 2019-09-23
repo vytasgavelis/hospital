@@ -19,22 +19,22 @@ class Client
         $this->name = $data['clients_name'];
         $this->specialistId = $data['specialists_id'];
         $this->serviced = $data['serviced'];
-        $this->date = $data['date'];   
-        $this->token = $data['token'];   
+        $this->date = $data['date'];
+        $this->token = $data['token'];
     }
     public function timeLeft()
     {
-        $timeService = new TimeService($this->pdo);     
+        $timeService = new TimeService($this->pdo);
         $specialist = $this->getSpecialist();
-        
-        $last = date("H:i:s",strtotime($specialist->getLastTime()));
+
+        $last = date("H:i:s", strtotime($specialist->getLastTime()));
         //Last time + average time - current time
         $timeLeft = strtotime($last) + $this->avgTime($specialist) - strtotime(date('Y-m-d H:i:s'));
-        if($timeLeft > 0){
+        if ($timeLeft > 0) {
             return $timeService->secsToTime($timeLeft);
-        }else{
+        } else {
             return '00:00:00';
-        }       
+        }
     }
 
     public function avgTime()
@@ -43,13 +43,13 @@ class Client
         $stmt->execute([$this->specialistId]);
         $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        for($i = 0; $i < sizeof($arr); $i++){
-            if($arr[$i]['id'] == $this->id){
+        for ($i = 0; $i < sizeof($arr); $i++) {
+            if ($arr[$i]['id'] == $this->id) {
                 $index = $i;
                 break;
             }
         }
-        if(isset($index)){
+        if (isset($index)) {
             $timeService = new TimeService($this->pdo);
             $avgTimeSecs = $timeService->timeToSecs($this->getSpecialist()->getAvgTime());
             $avg = $avgTimeSecs * $index;
@@ -62,6 +62,7 @@ class Client
     {
         return $this->serviced == 1;
     }
+
     public function getSpecialist()
     {
         $stmt = $this->pdo->prepare("SELECT * FROM specialists WHERE id = ?");
@@ -69,6 +70,8 @@ class Client
         $specialistData = $stmt->fetch(PDO::FETCH_ASSOC);
         return new Specialist($this->pdo, $specialistData);
     }
+
+    // Returns if client is last in queue.
     public function isLast()
     {
         $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE specialists_id = :specialists_id AND serviced = 0 ORDER BY DATE DESC LIMIT 1");
@@ -77,11 +80,12 @@ class Client
         ));
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if($data['id'] == $this->id){
-           return true;
+        if ($data['id'] == $this->id) {
+            return true;
         }
         return false;
     }
+
     public function isFirst()
     {
         $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE specialists_id = :specialists_id AND serviced = 0 ORDER BY DATE ASC LIMIT 1");
@@ -90,31 +94,34 @@ class Client
         ));
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if($data['id'] == $this->id){
-           return true;
+        if ($data['id'] == $this->id) {
+            return true;
         }
         return false;
     }
+
     public function getId()
     {
         return $this->id;
     }
+
     public function getName()
     {
         return $this->name;
     }
+
     public function getSpecialistId()
     {
         return $this->specialistId;
     }
+
     public function getDate()
     {
         return $this->date;
     }
+
     public function getToken()
     {
         return $this->token;
     }
-
-
 }

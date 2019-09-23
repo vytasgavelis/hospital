@@ -11,5 +11,3 @@ if(isset($_POST['token'], $_POST['id']) && Token::check($_SESSION['token']) == 1
 }
 
 header('location:manage.php');
-    
-?>

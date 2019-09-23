@@ -4,16 +4,16 @@ session_start();
 include_once('resources/dbconnection.php');
 include_once('src/SpecialistService.php');
 
-if(isset($_GET['id'])){
+if (isset($_GET['id'])) {
     $_SESSION['id'] = $_GET['id'];
     $times = array();
 
-    for($i = 0; $i < 24; $i++){
-        if($i < 10){
+    for ($i = 0; $i < 24; $i++) {
+        if ($i < 10) {
             $hour = '0' . $i;
             $dateL = $hour . ':00:00';
             $dateH = $hour . ':59:59';
-        }else{
+        } else {
             $hour = $i;
             $dateL = $hour . ':00:00';
             $dateH = $hour . ':59:59';
@@ -24,8 +24,8 @@ if(isset($_GET['id'])){
             ':dateH' => $dateH,
             ':id' => $_GET['id']
         ));
-        
-        $data = array( 
+
+        $data = array(
             "time" => $hour,
             "count" => sizeof($stmt->fetchAll(PDO::FETCH_ASSOC))
         );
@@ -36,41 +36,43 @@ if(isset($_GET['id'])){
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <link rel="stylesheet" type="text/css" href="css/board.css">
 </head>
 
 <script>
+    // Load google charts
+    google.charts.load('current', {
+        'packages': ['corechart']
+    });
+    google.charts.setOnLoadCallback(drawChart);
 
-// Load google charts
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
+    // Draw the chart and set the chart values
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Time', 'Count'],
+            <?php
+            foreach ($times as $time) {
+                echo "['" . $time['time'] . "', " . $time['count'] . "], ";
+            }
+            ?>
+        ]);
 
-// Draw the chart and set the chart values
-function drawChart() {
-  var data = google.visualization.arrayToDataTable([
-  ['Time', 'Count'],
-  <?php
-    foreach($times as $time){
-        echo "['" . $time['time'] . "', " . $time['count'] . "], ";
+        var options = {
+            'width': 600,
+            'height': 450,
+            'backgroundColor': '#1ab188'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
     }
-  ?>
-]);
-
-var options = {
-    'width':600,
-    'height':450,
-    'backgroundColor': '#1ab188'
-};
-
-var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-chart.draw(data, options);
-}
-
 </script>
+
 <body>
-<?php include_once("navbar.html"); ?>
+    <?php include_once("navbar.html"); ?>
 
     <div class="row">
         <div class="column side"></div>
@@ -80,29 +82,28 @@ chart.draw(data, options);
                 <form>
                     <select name="id">
                         <?php
-                            // Fill the select options with specialists.
-                            $specialistService = new SpecialistService($pdo);
-                            $specialists = $specialistService->getAllSpecialists();
-                            foreach($specialists as $specialist) {
-                                if(isset($_SESSION['id']) && $specialist->getId() == $_SESSION['id']){
-                                    echo "<option selected='selected' value='" . $specialist->getId() . "'>" . $specialist->getName() . "</option>";
-                                    unset($_SESSION['id']);
-                                }else{
-                                    echo "<option value='" . $specialist->getId() . "'>" . $specialist->getName() . "</option>";
-                                }
-                                echo $specialist->getId() . " " . $_SESSION['id'];
+                        // Fill the select options with specialists.
+                        $specialistService = new SpecialistService($pdo);
+                        $specialists = $specialistService->getAllSpecialists();
+                        foreach ($specialists as $specialist) {
+                            if (isset($_SESSION['id']) && $specialist->getId() == $_SESSION['id']) {
+                                echo "<option selected='selected' value='" . $specialist->getId() . "'>" . $specialist->getName() . "</option>";
+                                unset($_SESSION['id']);
+                            } else {
+                                echo "<option value='" . $specialist->getId() . "'>" . $specialist->getName() . "</option>";
                             }
+                            echo $specialist->getId() . " " . $_SESSION['id'];
+                        }
                         ?>
                     </select>
                     <button type="submit">Rodyti</button>
                 </form>
             </div>
             <div>
-                <?php 
-                if(isset($_GET['id'])){
+                <?php
+                if (isset($_GET['id'])) {
                     echo "Labiausiai užimti specialisto laikai:";
-                }
-                else{
+                } else {
                     echo "Pasirinkite specialistą ir spauskite rodyti, kad matyti jo laikus.";
                 }
                 ?>
@@ -113,4 +114,5 @@ chart.draw(data, options);
         <div class="column side"></div>
     </div>
 </body>
+
 </html>
