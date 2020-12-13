@@ -47,7 +47,6 @@ Taip pat turėtų būti sukurta prisijungimo sistema specialistams <br />
 Kontaktai
 ==========
 gavelisvytas@gmail.com<br />
-+37062815944<br />
 https://www.linkedin.com/in/vytas-gavelis-8a7438188/
 
 <h1>Ačiū už dėmesį.</h1>
